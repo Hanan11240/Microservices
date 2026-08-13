@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerce.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace eCommerce.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest register) {
+        public async Task<IActionResult> Register([FromBody]  RegisterRequest register) {
             if (register == null) {
                 return BadRequest("Invalid registration data");
             }
@@ -31,7 +31,7 @@ namespace eCommerce.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest loginRequest) {
+        public async Task<IActionResult> Login([FromBody]  LoginRequest loginRequest) {
             if(loginRequest is null)
             {
                 return BadRequest("Invalid login data");

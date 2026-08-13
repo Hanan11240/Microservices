@@ -34,10 +34,11 @@ internal class UserService : IUserService
 
     public async  Task<AuthenticationResponse?> Register(RegisterRequest registerRequest)
     {
-        ApplicationUser user = new ApplicationUser() {
-            PersonName = registerRequest.PersonName,Email = registerRequest.Email,Password= registerRequest.Password,
-            Gender = registerRequest.Gender.ToString()
-        };
+        //ApplicationUser user = new ApplicationUser() {
+        //    PersonName = registerRequest.PersonName,Email = registerRequest.Email,Password= registerRequest.Password,
+        //    Gender = registerRequest.Gender.ToString()
+        //};
+        ApplicationUser user = _mapper.Map<ApplicationUser>(registerRequest);
       ApplicationUser? registeredUser =   await  _userRepository.AddUser(user);
         if(registeredUser is null)
         {
