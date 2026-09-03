@@ -12,11 +12,15 @@ namespace DataAccessLayer
     {
         public static IServiceCollection AddDataAccessLayer(this IServiceCollection services,IConfiguration configuration)
         {
+
+            string connectionStringTemplate = configuration.GetConnectionString("DefaultConnection")!;
+           string connectionString= connectionStringTemplate.Replace("$MYSQL_HOST",Environment.GetEnvironmentVariable("MYSQL_HOST")!)
+            .Replace("$MYSQL_PASSWORD",Environment.GetEnvironmentVariable("MYSQL_PASSWORD")!);
             // Add Data access layer services into Ioc Container
             services.AddDbContext<ApplicationDbContext>(
                 options =>
                 {
-                    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!);
+                    options.UseMySQL(connectionString);
                 }
                 );
             services.AddScoped<IProductRepository, ProductRepository>();
