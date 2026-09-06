@@ -1,5 +1,7 @@
 ﻿
 
+using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
+using eCommerce.OrdersMicroservie.DataAccessLayer.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -20,6 +22,7 @@ namespace eCommerce.OrdersMicroserviceDataAccessLayer;
            IMongoClient client =  provider.GetRequiredService<IMongoClient>();
            return client.GetDatabase("OrdersDatabase");
         });
+        services.AddScoped<IOrdersRepository, OrdersRepository>();
         return services;
     }
     }
