@@ -1,7 +1,8 @@
 ﻿
 
+using eCommerce.OrdersMicroservice.DataAccessLayer.Repositories;
 using eCommerce.OrdersMicroservice.DataAccessLayer.RepositoryContracts;
-using eCommerce.OrdersMicroservie.DataAccessLayer.Repositories;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
