@@ -2,6 +2,7 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+ARG APP_UID
 USER $APP_UID
 WORKDIR /app
 EXPOSE 7070
@@ -31,4 +32,6 @@ ENV MONGO_HOST=localhost
 ENV MONGO_PORT=27017
 ENV UsersMicroserviceName=localhost
 ENV UsersMicroservicePort=9090
+ENV ProductsMicroserviceName=localhost
+ENV ProductsMicroservicePort=8080
 ENTRYPOINT ["dotnet", "OrdersMicroservice.APi.dll"]

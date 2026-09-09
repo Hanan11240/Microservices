@@ -32,6 +32,10 @@ builder.Services.AddHttpClient<UsersMicroserviceClients>(client =>{
     
 });
 
+builder.Services.AddHttpClient<ProductsMicroserviceClient>(client => {
+    client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
+});
+
 var app = builder.Build();
 
 
@@ -44,7 +48,7 @@ app.UseSwagger();
 
 
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
