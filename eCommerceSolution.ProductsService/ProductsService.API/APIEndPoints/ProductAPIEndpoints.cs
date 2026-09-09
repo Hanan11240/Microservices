@@ -23,6 +23,11 @@ namespace eCommerce.ProductsService.API.APIEndPoints
             app.MapGet("/api/products/search/product-id/{ProductID:guid}", async (IProductService productService,Guid ProductID) =>
             {
               ProductResponse? product =  await productService.GetProductByCondition(temp=> temp.ProductID == ProductID);
+
+                if(product is null)
+                {
+                    return Results.NotFound();
+                }
                 return Results.Ok(product);
             });
 
