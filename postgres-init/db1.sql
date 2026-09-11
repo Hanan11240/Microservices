@@ -1,4 +1,4 @@
-﻿﻿-- Create the table if it does not exist
+-- Create the table if it does not exist
 CREATE TABLE public."Users"
 (
     "UserID" uuid NOT NULL,
@@ -13,4 +13,4 @@ CREATE TABLE public."Users"
 INSERT INTO public."Users" ("UserID", "Email", "PersonName", "Gender", "Password")
 VALUES 
 ('c32f8b42-60e6-4c02-90a7-9143ab37189f', 'test1@example.com', 'John Doe', 'Male', 'password1'),
-('8ff22c7d-18c7-4ef0-a0ac-988ecb2ac7f5', 'test2@example.com', 'Jane Smith', 'Female', 'password2');INSERT INTO public."Users" ("UserID", "PersonName", "Email", "Password", "Gender") VALUES ('c32f8b42-60e6-4c02-90a7-9143ab37189f', 'Test User', 'test@example.com', 'password123', 'Male');
+('8ff22c7d-18c7-4ef0-a0ac-988ecb2ac7f5', 'test2@example.com', 'Jane Smith', 'Female', 'password2');
