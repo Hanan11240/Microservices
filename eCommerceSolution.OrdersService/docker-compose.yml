@@ -9,10 +9,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - MONGODB_HOST=mongodb-container
       - MONGODB_PORT=27017
-      - UsersMicroserviceName=users-microservice
+      - UsersMicroserviceName=apigateway
       - UsersMicroservicePort=8080
-      - ProductsMicroserviceName=products-microservice
+      - ProductsMicroserviceName=apigateway
       - ProductsMicroservicePort=8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "7000:8080"
     networks:
@@ -93,6 +95,25 @@ services:
       - ../postgres-init:/docker-entrypoint-initdb.d
     networks:
       - users-postgres-network
+   
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../redis-init:/data
+    networks:
+      - ecommerce-network
+  
+  apigateway:
+   image: apigateway
+   build:
+    context: .
+    dockerfile: ApiGateway/Dockerfile
+   ports:
+    - "4000:8080"
+   networks:
+    - ecommerce-network
 
 
 
