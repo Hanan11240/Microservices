@@ -5,6 +5,7 @@ using DataAccessLayer.Entities;
 using eCommerce.BusinessLogicLayer.DTO;
 using eCommerce.BusinessLogicLayer.ServiceContracts;
 using eCommerce.DataAccessLayer.RepositoryContracts;
+using eCommerce.ProductsService.BusinessLogicLayer.RabbitMQ;
 using FluentValidation;
 using FluentValidation.Results;
 using System.Linq.Expressions;
@@ -17,14 +18,18 @@ public class ProductService : IProductService
     private readonly IValidator<ProductUpdateRequest> _productUpdateRequestValidator;
     private readonly IMapper _mapper;
     private readonly IProductRepository _productRepostory;
+    private readonly IRabbitMQPublisher _rabbitMQPublisher;
 
 
-    public ProductService(IValidator<ProductAddRequest> productAddRequestValidator, IValidator<ProductUpdateRequest> productUpdateRequestValidator, IMapper mapper, IProductRepository productRepostory)
+    public ProductService(IValidator<ProductAddRequest> productAddRequestValidator,
+        IValidator<ProductUpdateRequest> productUpdateRequestValidator, IMapper mapper, IProductRepository productRepostory,
+         IRabbitMQPublisher rabbitMQPublisher)
     {
         _productAddRequestValidator = productAddRequestValidator;
         _productUpdateRequestValidator = productUpdateRequestValidator;
         _mapper = mapper;
         _productRepostory = productRepostory;
+        _rabbitMQPublisher = rabbitMQPublisher;
     }
 
     public async Task<ProductResponse?> AddProduct(ProductAddRequest productAddRequest)
@@ -64,6 +69,14 @@ public class ProductService : IProductService
         }
 
        bool isDeleted = await _productRepostory.DeleteProduct(productID);
+
+        if (isDeleted)
+        {
+            ProductDeletionMessage message = new ProductDeletionMessage(existingProduct.ProductID, existingProduct.ProductName);
+            string routingKey = "product.delete";
+
+            _rabbitMQPublisher.Publish(routingKey, message);
+        }
         return isDeleted;
         
     }
@@ -115,7 +128,17 @@ public class ProductService : IProductService
         }
 
         Product product = _mapper.Map<Product>(productUpdateRequest);
+        bool isProductNameChanged = productUpdateRequest.ProductName != existingProduct.ProductName;
         Product? updatedproduct = await _productRepostory.UpdateProduct(product);
+
+        if (isProductNameChanged)
+        {
+            string routingKey = "product.update.name";
+            var message = new ProductNameUpdateMessage(product.ProductID, product.ProductName);
+
+            _rabbitMQPublisher.Publish<ProductNameUpdateMessage>(routingKey, message);
+        }
+
         ProductResponse? updatedProductResponse= _mapper.Map<ProductResponse>(updatedproduct);
         return updatedProductResponse;
     }
