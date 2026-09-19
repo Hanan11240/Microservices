@@ -15,11 +15,13 @@ public class RabbitMQPublisher : IRabbitMQPublisher, IDisposable
     public RabbitMQPublisher(IConfiguration configuration)
     {
         _configuration = configuration;
+        Console.WriteLine($"Connecting to(product microservice) RabbitMQ at {_configuration["RabbitMQ_HostName"]}:{_configuration["RabbitMQ_Port"]} with user {_configuration["RabbitMQ_UserName"]!}");
 
         string hostName = _configuration["RabbitMQ_HostName"]!;
         string userName = _configuration["RabbitMQ_UserName"]!;
         string password = _configuration["RabbitMQ_Password"]!;
         string port = _configuration["RabbitMQ_Port"]!;
+
 
         ConnectionFactory connectionFactory = new ConnectionFactory()
         {

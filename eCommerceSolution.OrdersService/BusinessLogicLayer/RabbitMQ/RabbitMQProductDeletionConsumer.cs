@@ -19,6 +19,7 @@ public class RabbitMQProductDeletionConsumer : IDisposable, IRabbitMQProductDele
     public RabbitMQProductDeletionConsumer(IConfiguration configuration, ILogger<RabbitMQProductDeletionConsumer> logger)
     {
         _configuration = configuration;
+        Console.WriteLine($"Connecting to(orders  (deletion consumer)    microservice) RabbitMQ at {_configuration["RabbitMQ_HostName"]}:{_configuration["RabbitMQ_Port"]} with user {_configuration["RabbitMQ_UserName"]!}");
 
         string hostName = _configuration["RabbitMQ_HostName"]!;
         string userName = _configuration["RabbitMQ_UserName"]!;

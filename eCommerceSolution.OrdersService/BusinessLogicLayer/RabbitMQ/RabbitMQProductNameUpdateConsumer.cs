@@ -21,6 +21,7 @@ public class RabbitMQProductNameUpdateConsumer : IDisposable, IRabbitMQProductNa
         _configuration = configuration;
         _logger = logger;
 
+        Console.WriteLine($"Connecting to(orders  (update consumer)    microservice) RabbitMQ at {_configuration["RabbitMQ_HostName"]}:{_configuration["RabbitMQ_Port"]} with user {_configuration["RabbitMQ_UserName"]!}");
         string hostName = _configuration["RabbitMQ_HostName"]!;
         string userName = _configuration["RabbitMQ_UserName"]!;
         string password = _configuration["RabbitMQ_Password"]!;
